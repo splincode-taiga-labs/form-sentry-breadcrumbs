@@ -1,4 +1,4 @@
-import {Component, provideZonelessChangeDetection} from '@angular/core';
+import {Component, provideZonelessChangeDetection, signal} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule} from '@angular/forms';
@@ -13,7 +13,7 @@ vi.mock('@sentry/angular', () => ({addBreadcrumb: vi.fn()}));
     standalone: true,
     imports: [ReactiveFormsModule, SentryFormBreadcrumbsDirective],
     template: `
-        <form [formGroup]="form" sentryFormBreadcrumbs="checkout"
+        <form [formGroup]="form()" sentryFormBreadcrumbs="checkout"
               [sentryFormBreadcrumbsOptions]="options">
             <input formControlName="email" />
             <button type="submit">Save</button>
@@ -21,7 +21,7 @@ vi.mock('@sentry/angular', () => ({addBreadcrumb: vi.fn()}));
     `,
 })
 class HostComponent {
-    form = new FormGroup({email: new FormControl('')});
+    form = signal(new FormGroup({email: new FormControl('')}));
     options = {events: ['touched', 'submit'] as const};
 }
 
@@ -42,7 +42,7 @@ describe('SentryFormBreadcrumbsDirective', () => {
         const fixture = TestBed.createComponent(HostComponent);
         fixture.detectChanges();
 
-        const form = fixture.componentInstance.form;
+        const form = fixture.componentInstance.form();
         form.controls.email.markAsTouched();
         expect(addBreadcrumb).toHaveBeenCalledWith(expect.objectContaining({message: 'checkout: touched'}));
 
@@ -56,10 +56,10 @@ describe('SentryFormBreadcrumbsDirective', () => {
     it('re-subscribes when the input FormGroup instance changes', () => {
         const fixture = TestBed.createComponent(HostComponent);
         fixture.detectChanges();
-        const oldForm = fixture.componentInstance.form;
+        const oldForm = fixture.componentInstance.form();
         const nextForm = new FormGroup({email: new FormControl('')});
 
-        fixture.componentInstance.form = nextForm;
+        fixture.componentInstance.form.set(nextForm);
         fixture.detectChanges();
         vi.mocked(addBreadcrumb).mockClear();
         const formGroupDirective = fixture.debugElement.query(By.directive(FormGroupDirective)).injector.get(FormGroupDirective);
