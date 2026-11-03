@@ -60,6 +60,7 @@ describe('SentryFormBreadcrumbsDirective', () => {
 
         fixture.componentInstance.form = nextForm;
         fixture.detectChanges();
+        vi.mocked(addBreadcrumb).mockClear();
         oldForm.controls.email.markAsTouched();
         expect(addBreadcrumb).not.toHaveBeenCalled();
 
