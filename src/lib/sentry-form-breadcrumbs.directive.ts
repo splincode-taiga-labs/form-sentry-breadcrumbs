@@ -1,4 +1,4 @@
-import {Directive, DoCheck, inject, Input, OnDestroy} from '@angular/core';
+import {AfterViewChecked, Directive, inject, Input, OnDestroy} from '@angular/core';
 import {AbstractControl, ControlContainer} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
@@ -9,7 +9,7 @@ import {FormBreadcrumbsOptions, FormBreadcrumbsService} from './form-breadcrumbs
     selector: 'form[sentryFormBreadcrumbs]',
     standalone: true,
 })
-export class SentryFormBreadcrumbsDirective implements DoCheck, OnDestroy {
+export class SentryFormBreadcrumbsDirective implements AfterViewChecked, OnDestroy {
     @Input({required: true}) sentryFormBreadcrumbs = '';
     @Input() sentryFormBreadcrumbsOptions?: FormBreadcrumbsOptions;
 
@@ -20,7 +20,7 @@ export class SentryFormBreadcrumbsDirective implements DoCheck, OnDestroy {
     private trackedName?: string;
     private trackedOptions?: FormBreadcrumbsOptions;
 
-    ngDoCheck(): void {
+    ngAfterViewChecked(): void {
         if (!this.container) {
             throw new Error('sentryFormBreadcrumbs requires ReactiveFormsModule or FormsModule');
         }
