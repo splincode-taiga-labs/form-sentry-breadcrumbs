@@ -1,6 +1,7 @@
 import {Component, provideZonelessChangeDetection} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {By} from '@angular/platform-browser';
+import {FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule} from '@angular/forms';
 import {addBreadcrumb} from '@sentry/angular';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
@@ -61,6 +62,10 @@ describe('SentryFormBreadcrumbsDirective', () => {
         fixture.componentInstance.form = nextForm;
         fixture.detectChanges();
         vi.mocked(addBreadcrumb).mockClear();
+        const formGroupDirective = fixture.debugElement.query(By.directive(FormGroupDirective)).injector.get(FormGroupDirective);
+        const breadcrumbsDirective = fixture.debugElement.query(By.directive(SentryFormBreadcrumbsDirective)).injector.get(SentryFormBreadcrumbsDirective);
+        expect(formGroupDirective.form).toBe(nextForm);
+        expect(breadcrumbsDirective['trackedControl']).toBe(nextForm);
         oldForm.controls.email.markAsTouched();
         expect(addBreadcrumb).not.toHaveBeenCalled();
 
