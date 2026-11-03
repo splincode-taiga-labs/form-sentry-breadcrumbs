@@ -6,7 +6,7 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "build": "ng-packagr -p ng-package.json",
+    "build": "ng-packagr -p ng-package.json --config tsconfig.lib.json",
     "test": "vitest run",
     "check": "npm run test && npm run build"
   },
