@@ -1,4 +1,4 @@
-import {Directive, DoCheck, inject, input, OnDestroy} from '@angular/core';
+import {Directive, DoCheck, inject, Input, OnDestroy} from '@angular/core';
 import {AbstractControl, ControlContainer} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
@@ -10,8 +10,8 @@ import {FormBreadcrumbsOptions, FormBreadcrumbsService} from './form-breadcrumbs
     standalone: true,
 })
 export class SentryFormBreadcrumbsDirective implements DoCheck, OnDestroy {
-    readonly sentryFormBreadcrumbs = input.required<string>();
-    readonly sentryFormBreadcrumbsOptions = input<FormBreadcrumbsOptions>();
+    @Input({required: true}) sentryFormBreadcrumbs = '';
+    @Input() sentryFormBreadcrumbsOptions?: FormBreadcrumbsOptions;
 
     private readonly container = inject(ControlContainer, {self: true, optional: true});
     private readonly service = inject(FormBreadcrumbsService);
@@ -26,8 +26,8 @@ export class SentryFormBreadcrumbsDirective implements DoCheck, OnDestroy {
         }
 
         const control = this.container.control;
-        const name = this.sentryFormBreadcrumbs();
-        const options = this.sentryFormBreadcrumbsOptions();
+        const name = this.sentryFormBreadcrumbs;
+        const options = this.sentryFormBreadcrumbsOptions;
 
         if (control === this.trackedControl && name === this.trackedName && options === this.trackedOptions) {
             return;
