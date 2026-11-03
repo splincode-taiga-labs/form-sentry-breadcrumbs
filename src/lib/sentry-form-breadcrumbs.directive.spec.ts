@@ -64,8 +64,8 @@ describe('SentryFormBreadcrumbsDirective', () => {
         vi.mocked(addBreadcrumb).mockClear();
         const formGroupDirective = fixture.debugElement.query(By.directive(FormGroupDirective)).injector.get(FormGroupDirective);
         const breadcrumbsDirective = fixture.debugElement.query(By.directive(SentryFormBreadcrumbsDirective)).injector.get(SentryFormBreadcrumbsDirective);
-        expect(formGroupDirective.form).toBe(nextForm);
-        expect(breadcrumbsDirective['trackedControl']).toBe(nextForm);
+        expect(formGroupDirective.form === nextForm).toBe(true);
+        expect(breadcrumbsDirective['trackedControl'] === nextForm).toBe(true);
         oldForm.controls.email.markAsTouched();
         expect(addBreadcrumb).not.toHaveBeenCalled();
 
