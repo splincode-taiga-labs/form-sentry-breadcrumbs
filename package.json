@@ -1,0 +1,36 @@
+{
+  "name": "form-sentry-breadcrumbs",
+  "version": "0.1.0",
+  "description": "Privacy-first Angular Forms breadcrumbs for Sentry",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "test": "vitest run",
+    "check": "npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "@angular/core": "^20.0.0 || ^21.0.0 || ^22.0.0",
+    "@angular/forms": "^20.0.0 || ^21.0.0 || ^22.0.0",
+    "@sentry/angular": "^10.0.0 || ^11.0.0",
+    "rxjs": "^7.4.0"
+  },
+  "dependencies": {
+    "tslib": "^2.8.0"
+  },
+  "devDependencies": {
+    "@angular/compiler": "^21.0.0",
+    "@angular/compiler-cli": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/platform-browser-dynamic": "^21.0.0",
+    "@sentry/angular": "^11.10.0",
+    "jsdom": "^26.0.0",
+    "ng-packagr": "^21.0.0",
+    "rxjs": "^7.8.0",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.0"
+  }
+}
